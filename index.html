@@ -228,6 +228,8 @@
                     <h1>Scrapython</h1>
                     <h3>Gratter la toile avec <span class='py'>Python</span></h3>
                     <small>Une présentation <a href="http://twitter.com/samuelcharron">@samuelcharron</a> / <a href="http://data-publica.com">Data Publica</a>.</small>
+                    <br>
+                    <small><a href="http://datapublica.github.io/scrapython">http://datapublica.github.io/scrapython</a></small>
                 </section>
 
                 <!--
@@ -660,11 +662,11 @@ document = pq(resultat.text).make_links_absolute(url)
 # Sélectionner des éléments
 json.dumps([a.attr.href for a in document("a").items()][:5], indent=2)
 <code class=' result'>[
-  "http://fr.wikipedia.org/wiki/Araign\u00e9e", 
-  "http://fr.wikipedia.org/w/index.php?title=Araign%C3%A9e&redirect=no", 
-  "http://fr.wikipedia.org/wiki/Araign\u00e9e#mw-navigation", 
-  "http://fr.wikipedia.org/wiki/Araign\u00e9e#p-search", 
-  "http://fr.wikipedia.org/wiki/Aide:Redirection"
+  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e", 
+  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e#mw-navigation", 
+  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e#p-search", 
+  "http://fr.wikipedia.org/wiki/Sp%C3%A9cial:Matrice_des_sites", 
+  "http://fr.wiktionary.org/wiki/Special:Recherche/Araign%C3%83%C2%A9e"
 ]</code></code></pre><div class='source'>  <a class='source' href='examples/requests-pyquery.py'>  source  </a></div>
                     </section>
                     <section>
@@ -685,11 +687,11 @@ for link in ([a.attr.href for a in document("a").items()][:5]):
 
 json.dumps(titles, indent=2)
 <code class=' result'>[
-  "Araneae - Wikip\u00e9dia", 
-  "Araign\u00e9e - Wikip\u00e9dia", 
-  "Araneae - Wikip\u00e9dia", 
-  "Araneae - Wikip\u00e9dia", 
-  "Aide:Redirection - Wikip\u00e9dia"
+  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
+  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
+  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
+  "Liste des wikis de Wikimedia Foundation - Wikip\u00e9dia", 
+  "R\u00e9sultats de recherche pour \u00ab Araign\u00c3\u00a9e \u00bb - Wiktionnaire"
 ]</code></code></pre><div class='source'>  <a class='source' href='examples/requests-pyquery2.py'>  source  </a></div>
                     </section>
                 </section>
@@ -848,6 +850,15 @@ for full_name, in people:
                         <!--<iframe src="examples/qui_fait_quoi.html" width="90%" height="500px"></iframe>-->
                     </section>
                 </section>
+                <section>
+                    <h2>Liens à visiter d'urgence</h2>
+                    <ul>
+                        <li><a href="https://twitter.com/intent/tweet?source=webclient&text=Scrapathon — Scraping with python: http://datapublica.github.io/scrapython"><span class='symbol'>🐦</span>Partager sur le gazouilleur<span class='symbol'>🐦</span></a></li>
+                        <li><a href="https://twitter.com/samuelcharron">@samuelcharron</a> — <a href="https://twitter.com/datapublicool">@datapublicool</a></li>
+                        <li><a href="http://datapublica.github.io/scrapathon-java/">Scrapathon Java</a></li>
+                    </ul>
+                </section>
+
             </div>
 
         </div>
@@ -905,12 +916,6 @@ for full_name, in people:
             });
 
         </script>
-
-        <!-- Everything below this point is unrelated to the slideshow -->
-
-        <div class="share-reveal" style="display: none; position: absolute; bottom: 10px; left: 50%; margin-left: -225px; z-index: 20;">
-            <a href="http://twitter.com/share" class="twitter-share-button" data-text="Scraping with python – @samuelcharron" data-url="http://lab.hakim.se/reveal-js" data-count="small" data-related="samuelcharron"></a>
-        </div>
 
     </body>
 </html>
