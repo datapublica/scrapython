@@ -298,25 +298,25 @@
                                 <td></td>
                                 <td>
                                     <ul>
-                                        <li><a href="/#/4">Requests</a></li>
-                                        <li><a href="/#/3">Scrapy</a></li>
+                                        <li><a href="#/4">Requests</a></li>
+                                        <li><a href="#/3">Scrapy</a></li>
                                     </ul>
                                 </td>
                                 <td></td>
                                 <td>
                                     <ul>
-                                        <li><a href="docs.python.org/library/re.html">Expressions rationnelles</a></li>
-                                        <li><a href="/#/5">PyQuery</a></li>
-                                        <li><a href="/#/3">Scrapy</a></li>
+                                        <li><a href="http://docs.python.org/library/re.html">Expressions rationnelles</a></li>
+                                        <li><a href="#/5">PyQuery</a></li>
+                                        <li><a href="#/3">Scrapy</a></li>
                                     </ul>
                                 </td>
                                 <td></td>
                                 <td>
                                     <ul>
-                                        <li><a href="/#/TODO">XPaths</a></li>
-                                        <li><a href="/#/TODO">Sélecteurs CSS</a></li>
-                                        <li><a href="/#/5">PyQuery</a></li>
-                                        <li><a href="/#/3">Scrapy</a></li>
+                                        <li><a href="#/3/5">XPaths</a></li>
+                                        <li><a href="#/5/2">Sélecteurs CSS</a></li>
+                                        <li><a href="#/5">PyQuery</a></li>
+                                        <li><a href="#/3">Scrapy</a></li>
                                     </ul>
                                 </td>
                         </table>
@@ -576,7 +576,7 @@ resultat.status_code
                         <h2>PyQuery</h2>
                         <ul>
                             <li><a href="https://github.com/gawel/pyquery/">PyQuery</a>: bibliothèque permettant d'extraire des éléments d'une page web
-                            <li>Évite l'utilisation de <a href="/#/3/7">XPaths</a> pour la syntaxe plus agréable des sélecteurs CSS</li>
+                            <li>Évite l'utilisation de <a href="#/3/5">XPaths</a> pour la syntaxe plus agréable des sélecteurs CSS</li>
                         </ul>
                     </section>
                     <section>
@@ -656,11 +656,11 @@ document = pq(resultat.text).make_links_absolute(url)
 # Sélectionner des éléments
 json.dumps([a.attr.href for a in document("a").items()][:5], indent=2)
 <code class=' result'>[
-  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e", 
-  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e#mw-navigation", 
-  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e#p-search", 
-  "http://fr.wikipedia.org/wiki/Sp%C3%A9cial:Matrice_des_sites", 
-  "http://fr.wiktionary.org/wiki/Special:Recherche/Araign%C3%83%C2%A9e"
+  "http://fr.wikipedia.org/wiki/Araign\u00e9e", 
+  "http://fr.wikipedia.org/w/index.php?title=Araign%C3%A9e&redirect=no", 
+  "http://fr.wikipedia.org/wiki/Araign\u00e9e#mw-navigation", 
+  "http://fr.wikipedia.org/wiki/Araign\u00e9e#p-search", 
+  "http://fr.wikipedia.org/wiki/Aide:Redirection"
 ]</code></code></pre><div class='source'>  <a class='source' href='examples/requests-pyquery.py'>  source  </a></div>
                     </section>
                     <section>
@@ -681,11 +681,11 @@ for link in ([a.attr.href for a in document("a").items()][:5]):
 
 json.dumps(titles, indent=2)
 <code class=' result'>[
-  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
-  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
-  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
-  "Liste des wikis de Wikimedia Foundation - Wikip\u00e9dia", 
-  "R\u00e9sultats de recherche pour \u00ab Araign\u00c3\u00a9e \u00bb - Wiktionnaire"
+  "Araneae - Wikip\u00e9dia", 
+  "Araign\u00e9e - Wikip\u00e9dia", 
+  "Araneae - Wikip\u00e9dia", 
+  "Araneae - Wikip\u00e9dia", 
+  "Aide:Redirection - Wikip\u00e9dia"
 ]</code></code></pre><div class='source'>  <a class='source' href='examples/requests-pyquery2.py'>  source  </a></div>
                     </section>
                 </section>
