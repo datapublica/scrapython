@@ -21,7 +21,8 @@ class WikiAraignee(CrawlSpider):
         Rule(SgmlLinkExtractor(),
              callback='parse_page',
              ## nodisplay # Pour ne pas crawler plus de 10 liens
-             process_links=lambda links: links[:5]
+             follow=False,
+             process_links=lambda links: links[:5],
              ## /nodisplay
              )]
 

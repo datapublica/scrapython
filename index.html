@@ -108,13 +108,8 @@
                 box-shadow: None;
             }
 
-            .reveal a:not(.image) {
-                vertical-align: baseline !important;
-                overflow: inherit;
-            }
-            .reveal li a:not(.image) {
-                vertical-align: top !important;
-                overflow: inherit;
+            .reveal a.baseline:not(.image) {
+                vertical-align: text-bottom !important;
             }
 
             .reveal span.ref.link {
@@ -155,12 +150,12 @@
                 padding-left: 20px;
             }
 
-            .reveal div.source, .reveal div.source:hover {
+            .reveal div.source {
                 text-align: right;
                 width: 100%;
                 position: relative;
                 font-size: 14px;
-                margin-top: -20px;
+                margin-top: -14px;
                 right: 5%;
             }
 
@@ -231,21 +226,28 @@
             <div class="slides">
                 <section>
                     <h1>Scrapython</h1>
-                    <h3>Gratter la toile avec Python</h3>
+                    <h3>Gratter la toile avec <span class='py'>Python</span></h3>
                     <p>
                         <small>Une présentation <a href="http://twitter.com/samuelcharron">@samuelcharron</a> / <a href="http://data-publica.com">Data Publica</a>.</small>
                     </p>
                 </section>
 
+                <!--
+                <section>
+                    <h1>ATTENTION<br>CES SILDES NE SONT PAS DES SILDES SUR LE CYCLIMSE</h1>
+                    <h2>MERCI DE VOTRE COMPRÉHENSION</h2>
+                </section>
+                -->
+
                 <section>
                     <h2>Contenu de la présentation</h2>
                     <ul>
-                        <li>Scrapathon ?</li>
-                        <li>Scrapy</li>
-                        <li>Requests</li>
-                        <li>Pyquery</li>
-                        <li>Requests + Pyquery</li>
-                        <li>Un exemple concret</li>
+                        <li><a href="#/2">Scrapathon ?</a></li>
+                        <li><a href="#/3">Scrapy</a></li>
+                        <li><a href="#/4">Requests</a></li>
+                        <li><a href="#/5">Pyquery</a></li>
+                        <li><a href="#/6">Requests + Pyquery</a></li>
+                        <li><a href="#/7">Un exemple concret</a></li>
                     </ul>
                 </section>
 
@@ -267,6 +269,7 @@
                         <h2>Web Scraping</h2>
                         <ul>
                             <li>Structure cachée: souvent une base de données derrière un site</li>
+                            <li>Une page: un fragment de cette base de données</li>
                             <li>Reconstituer la base de données à partir du site entier</li>
                             <li>Utilisation: croisement de données, moteur de recherche structuré, ...</li>
                             <li>Fortement lié à un site: extraction spécifique</li>
@@ -331,7 +334,7 @@
                     <section>
                         <h2>Scrapy <span class='mini'>1/2</span></h2>
                         <ul>
-                            <li><a href="http://scrapy.org/">Scrapy</a> est un cadriciel<span class='ref link'>1</span> orienté gratouillage<span class='ref link'>2</span>
+                            <li><a class='baseline' href="http://scrapy.org/">Scrapy</a> est un cadriciel<span class='ref link'>1</span> orienté gratouillage<span class='ref link'>2</span>
                             <li>Deux composants à définir:
                                 <ul>
                                     <li>Une araignée<span class='ref link'>3</span> suivant les liens du site
@@ -351,7 +354,7 @@
                             <li>Configurable par de nombreux intergiciels<span class='ref link'>1</span>:
                                 <ul>
                                     <li><span class='cookie'>Témoins de connexion<span class='ref link'>2</span></span></li>
-                                    <li>Agent d'utilisateur<span class='ref link'>3</span>(?)</li>
+                                    <li>Agent d'utilisateur<span class='ref link'>3</span></li>
                                     <li>Compression HTTP</li>
                                 </ul>
                             </li>
@@ -479,11 +482,13 @@ from scrapy.contrib.spiders import Rule
                         <h2>Scrapy — Shell</h2>
                         <ul>
                             <li>Interpreteur python prêt à l'emploi</li>
-                            <li>permettant de tester des extractions.</li>
+                            <li>Permettant de tester des extractions.</li>
                         </ul>
                         <pre><code class='snippet  bash' data-trim  data-noescape>scrapy shell xpath.html # Accepte un fichier ou une URL
 
 [...]
+# hxs est une variable contenant le fichier ou l'URL téléchargée)
+# elle permet de faire des requêtes XPath sur ce contenu
 &gt;&gt;&gt; hxs.select("/html/body//li")
 [&lt;HtmlXPathSelector xpath='/html/body//li' data=u'&lt;li class="c1"&gt;Premier […]
 
@@ -511,7 +516,8 @@ class WikiAraignee(CrawlSpider):
     rules = [
         Rule(SgmlLinkExtractor(),
              callback='parse_page',
-<span style='display:None;'>             process_links=lambda links: links[:5]
+<span style='display:None;'>             follow=False,
+             process_links=lambda links: links[:5],
 </span>             )]
 
     def parse_page(self, response):
@@ -610,7 +616,7 @@ resultat.status_code
                             <tr>
                                 <td>li#c1</td>
                                 <td>le nœud de type &lt;li&gt; ayant un attribut «id» ayant comme valeur «c1»</td>
-                                <td>/html//li[@id='c1']</td>
+                                <td>//li[@id='c1']</td>
                             </tr>
                         </table>
                     </section>
@@ -697,7 +703,22 @@ json.dumps(titles, indent=2)
                     <section>
                         <h2>Projet "Qui fait quoi?"</h2>
 
-                        Objectif: Extraire les profils linkedin des participants au scrapathon.
+                        Objectif: Extraire des informations professionnelles des participants au scrapathon.
+                        <br>
+                        <br>
+                        <ul>
+                            <li>amiando.com pour la liste des participants</li>
+                            <li>linkedin pour les infos professionnelles</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Amiando — Les liens</h2>
+                        <img src='img/firebug.png'>
+                        <pre><code class='snippet  html' data-trim  data-noescape>&lt;a id="id21" href="#"
+    onclick="var wcall=wicketAjaxGet('/eventxml/wicket.xml;jsessionid=...', ..."
+&gt;Suivant »&lt;/a&gt;
+
+</code></pre><div class='source'>  <a class='source' href='examples/amiando-url.html'>  source  </a></div>
                     </section>
                     <section>
                         <h2>Suivre les liens</h2>
@@ -729,6 +750,10 @@ from scrapy.http import Request
             yield Request(next_link)
 
 </code></pre><div class='source'>  <a class='source' href='examples/scrapy/scrapy_example/spiders/amiando.py'>  source  </a></div>
+                    </section>
+                    <section>
+                        <h2>Amiando — Les gens</h2>
+                        <img src='img/firebug2.png'>
                     </section>
                     <section>
                         <h2>Extraire l'information</h2>
