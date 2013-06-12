@@ -372,47 +372,13 @@
                     <section>
                         <h2>Scrapy — Installation</h2>
                         Installer scrapy:
-                        <pre><code class='snippet  bash' data-trim  data-noescape>pip install scrapy
-
-</code></pre><div class='source'>  <a class='source' href='examples/scrapy-install.sh'>  source  </a></div>
+                        {{scrapy-install.sh}}
                         Créer un projet scrapy:
-                        <pre><code class='snippet  bash' data-trim  data-noescape># créer un projet scrapy
-# Un projet scrapy peut contenir plusieurs araignées
-scrapy startproject mon_projet
-
-cd mon_projet
-
-# créer une araignée
-scrapy genspider -t basic my_spider mon.domaine.com
-
-# lancer l'araignée
-scrapy runspider mon_projet/spiders/my_spider.py
-
-</code></pre><div class='source'>  <a class='source' href='examples/scrapy-setup.sh'>  source  </a></div>
+                        {{scrapy-setup.sh}}
                     </section>
                     <section>
                         <h2>Scrapy — Première araignée</h2>
-                        <pre><code class='snippet  python' data-trim  data-noescape>
-<span style='display:None;'>from scrapy.contrib.spiders import CrawlSpider
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
-from scrapy.contrib.spiders import Rule
-
-
-</span>class WikiAraignee(CrawlSpider):
-    name = 'wiki1'
-    # Domaines autorisés lors du parcours du site.
-    # Les URLs sortant de ce domaines sont supprimées.
-    allowed_domains = ['fr.wikipedia.org']
-    start_urls = ['http://fr.wikipedia.org/wiki/Araignée']
-
-    # Regles de suivi de lien
-    rules = [
-        Rule(SgmlLinkExtractor(),
-             follow=False,
-<span style='display:None;'>             process_links=lambda links: links[:5]
-</span>             )]
-
-</code></pre><div class='source'>  <a class='source' href='examples/scrapy/scrapy_example/spiders/wiki1.py'>  source  </a></div>
+                        {{scrapy/scrapy_example/spiders/wiki1.py}}
                     </section>
                     <section>
                         <h2>Scrapy — XPaths<span class='mini'>1/2</span></h2>
@@ -422,31 +388,11 @@ from scrapy.contrib.spiders import Rule
                             <li>Point de départ: un nœud virtuel situés au dessus du nœud &lt;html&gt;</li>
                         </ul>
                         
-                        <pre><code class='snippet  html' data-trim  data-noescape>&lt;html&gt;
-  &lt;body&gt;
-    &lt;ul&gt;
-      &lt;li class='c1'&gt;Premier élément&lt;/li&gt;
-      &lt;li&gt;Deuxième élément&lt;/li&gt;
-      &lt;li class='c1'&gt;Troisième élément&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-
-</code></pre><div class='source'>  <a class='source' href='examples/xpath.html'>  source  </a></div>
+                        {{xpath.html}}
                     </section>
                     <section>
                         <h2>Scrapy — XPaths<span class='mini'>2/2</span></h2>
-                        <pre><code class='snippet  html' data-trim  data-noescape>&lt;html&gt;
-  &lt;body&gt;
-    &lt;ul&gt;
-      &lt;li class='c1'&gt;Premier élément&lt;/li&gt;
-      &lt;li&gt;Deuxième élément&lt;/li&gt;
-      &lt;li class='c1'&gt;Troisième élément&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-
-</code></pre><div class='source'>  <a class='source' href='examples/xpath.html'>  source  </a></div>
+                        {{xpath.html}}
                         <table class='xpath'>
                             <tr>
                                 <td>Sélecteur</td>
@@ -481,58 +427,16 @@ from scrapy.contrib.spiders import Rule
                             <li>Interpreteur python prêt à l'emploi</li>
                             <li>permettant de tester des extractions.</li>
                         </ul>
-                        <pre><code class='snippet  bash' data-trim  data-noescape>scrapy shell xpath.html # Accepte un fichier ou une URL
-
-[...]
-&gt;&gt;&gt; hxs.select("/html/body//li")
-[&lt;HtmlXPathSelector xpath='/html/body//li' data=u'&lt;li class="c1"&gt;Premier […]
-
-</code></pre><div class='source'>  <a class='source' href='examples/running-scrapy-shell.sh'>  source  </a></div>
+                        {{running-scrapy-shell.sh}}
                     </section>
                     <section>
                         <h2>Scrapy — Deuxième araignée</h2>
-                        <pre><code class='snippet  python' data-trim  data-noescape>
-<span style='display:None;'>from scrapy.contrib.spiders import CrawlSpider
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
-from scrapy.contrib.spiders import Rule
-from scrapy.selector import HtmlXPathSelector
-from scrapy.item import Item, Field
-
-
-</span>class WikiItem(Item):
-    title = Field()
-
-
-class WikiAraignee(CrawlSpider):
-    name = 'wiki2'
-    allowed_domains = ['fr.wikipedia.org']
-    start_urls = ['http://fr.wikipedia.org/wiki/Araignée']
-
-    rules = [
-        Rule(SgmlLinkExtractor(),
-             callback='parse_page',
-<span style='display:None;'>             process_links=lambda links: links[:5]
-</span>             )]
-
-    def parse_page(self, response):
-        hxs = HtmlXPathSelector(response)
-        title = hxs.select('//title/text()').extract()
-        return WikiItem(title=title)
-
-</code></pre><div class='source'>  <a class='source' href='examples/scrapy/scrapy_example/spiders/wiki2.py'>  source  </a></div>
+                        {{scrapy/scrapy_example/spiders/wiki2.py}}
                     </section>
                     <section>
                         <h2>Scrapy — Résultat</h2>
-                        <pre><code class='snippet  bash' data-trim  data-noescape>scrapy runspider scrapy_example/spiders/wiki2.py -o links.json --loglevel INFO
-
-</code></pre><div class='source'>  <a class='source' href='examples/running-scrapy.sh'>  source  </a></div>
-                        <pre><code class='snippet  json' data-trim  data-noescape>{"title": ["Araign\u00e9e - Wikip\u00e9dia"]}
-{"title": ["Classification scientifique des esp\u00e8ces - Wikip\u00e9dia"]}
-{"title": ["Araign\u00e9e (homonymie) - Wikip\u00e9dia"]}
-{"title": ["Aide:Redirection - Wikip\u00e9dia"]}
-{"title": ["Araneae - Wikip\u00e9dia"]}
-
-</code></pre><div class='source'>  <a class='source' href='examples/scrapy/links.json'>  source  </a></div>
+                        {{running-scrapy.sh}}
+                        {{scrapy/links.json}}
                     </section>
                 </section>
 
@@ -552,17 +456,7 @@ class WikiAraignee(CrawlSpider):
 
                     <section>
                         <h2>Exemple d'utilisation de Requests</h2>
-                        <pre><code class='snippet exec python' data-trim contenteditable data-noescape>import requests
-
-url = "http://fr.wikipedia.org/wiki/Araignée"
-resultat = requests.get(url)
-
-resultat.status_code
-<code class=' result'>200</code>resultat.text[:104]
-<code class=' result'>&lt;!DOCTYPE html&gt;
-&lt;html lang="fr" dir="ltr" class="client-nojs"&gt;
-&lt;head&gt;
-&lt;title&gt;Araneae - Wikipédia&lt;/title&gt;</code></code></pre><div class='source'>  <a class='source' href='examples/requests-intro.py'>  source  </a></div>
+                        {{requests-intro.py:exec}}
                     </section>
                 </section>
 
@@ -617,24 +511,7 @@ resultat.status_code
 
                     <section>
                         <h2>Exemple d'utilisation de PyQuery</h2>
-                        <pre><code class='snippet exec python' data-trim contenteditable data-noescape>from pyquery import PyQuery as pq
-
-doc = """
-&lt;html&gt;&lt;body&gt;
-  &lt;ul class='container'&gt;
-      &lt;li id='li-1'&gt;premier li&lt;/li&gt;
-      &lt;li id='li-2'&gt;deuxieme li&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/body&gt;&lt;/html&gt;
-"""
-
-# Créer un document à partir d'une chaîne
-selecteur = pq(doc)
-
-# Sélectionner des éléments
-selecteur("ul.container").text()
-<code class=' result'>premier li deuxieme li</code>selecteur("#li-1").text()
-<code class=' result'>premier li</code></code></pre><div class='source'>  <a class='source' href='examples/pyquery-intro.py'>  source  </a></div>
+                        {{pyquery-intro.py:exec}}
                     </section>
                 </section>
 
@@ -645,48 +522,11 @@ selecteur("ul.container").text()
                     </section>
                     <section>
                         <h2>Requests + PyQuery <span class='mini'>1/2</span></h2>
-                        <pre><code class='snippet exec python' data-trim contenteditable data-noescape><span style='display:None;'>import json
-</span>from pyquery import PyQuery as pq
-import requests
-
-url = u"http://fr.wikipedia.org/wiki/Araignée"
-resultat = requests.get(url)
-document = pq(resultat.text).make_links_absolute(url)
-
-# Sélectionner des éléments
-json.dumps([a.attr.href for a in document("a").items()][:5], indent=2)
-<code class=' result'>[
-  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e", 
-  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e#mw-navigation", 
-  "http://fr.wikipedia.org/wiki/Araign\u00c3\u00a9e#p-search", 
-  "http://fr.wikipedia.org/wiki/Sp%C3%A9cial:Matrice_des_sites", 
-  "http://fr.wiktionary.org/wiki/Special:Recherche/Araign%C3%83%C2%A9e"
-]</code></code></pre><div class='source'>  <a class='source' href='examples/requests-pyquery.py'>  source  </a></div>
+                        {{requests-pyquery.py:exec}}
                     </section>
                     <section>
                         <h2>Requests + PyQuery <span class='mini'>2/2</span></h2>
-                        <pre><code class='snippet exec python' data-trim contenteditable data-noescape><span style='display:None;'>import json
-</span>from pyquery import PyQuery as pq
-import requests
-
-url = u"http://fr.wikipedia.org/wiki/Araignée"
-resultat = requests.get(url)
-document = pq(resultat.text).make_links_absolute(url)
-
-titles = []
-# Sélectionner des éléments
-for link in ([a.attr.href for a in document("a").items()][:5]):
-    document = pq(requests.get(link).content)
-    titles.append(document("title").text())
-
-json.dumps(titles, indent=2)
-<code class=' result'>[
-  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
-  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
-  "Araign\u00c3\u00a9e - Wikip\u00e9dia", 
-  "Liste des wikis de Wikimedia Foundation - Wikip\u00e9dia", 
-  "R\u00e9sultats de recherche pour \u00ab Araign\u00c3\u00a9e \u00bb - Wiktionnaire"
-]</code></code></pre><div class='source'>  <a class='source' href='examples/requests-pyquery2.py'>  source  </a></div>
+                        {{requests-pyquery2.py:exec}}
                     </section>
                 </section>
                 <section>
@@ -701,122 +541,22 @@ json.dumps(titles, indent=2)
                     </section>
                     <section>
                         <h2>Suivre les liens</h2>
-                        <pre><code class='snippet  python' data-trim  data-noescape>
-<span style='display:None;'>import re
-import urlparse
-
-from scrapy.spider import BaseSpider
-from scrapy.selector import HtmlXPathSelector
-from scrapy.http import Request
-
-
-</span>class QuiFaitQuoi(BaseSpider):
-    name = 'amiando'
-    allowed_domains = ['fr.amiando.com']
-    start_urls = ['http://fr.amiando.com/scrapathon.html?page=961570']
-
-    def parse(self, response):
-        hxs = HtmlXPathSelector(response)
-        # Extract next link
-        links = hxs.select("//span[@class='pagerBlock'][1]//a")
-        links = [a.select("@onclick")[0].extract()
-                 for a in links
-                 if "Suivant" in a.extract()]
-        if len(links) &gt; 0:
-            next_link = re.search("'(.*?)'", links[0])
-            next_link = next_link.group(1)
-            next_link = urlparse.urljoin(response.url, next_link)
-            yield Request(next_link)
-
-</code></pre><div class='source'>  <a class='source' href='examples/scrapy/scrapy_example/spiders/amiando.py'>  source  </a></div>
+                        {{scrapy/scrapy_example/spiders/amiando.py}}
                     </section>
                     <section>
                         <h2>Extraire l'information</h2>
-                        <pre><code class='snippet  python' data-trim  data-noescape>
-<span style='display:None;'>import re
-import urlparse
-
-from scrapy.spider import BaseSpider
-from scrapy.selector import HtmlXPathSelector
-from scrapy.http import Request
-from scrapy.item import Item, Field
-
-
-</span>class People(Item):
-    name = Field()
-
-
-class QuiFaitQuoi(BaseSpider):
-    name = 'amiando2'
-    allowed_domains = ['fr.amiando.com']
-    start_urls = ['http://fr.amiando.com/scrapathon.html?page=961570']
-
-    def parse(self, response):
-        hxs = HtmlXPathSelector(response)
-<span style='display:None;'>        # Extract next link
-        links = hxs.select("//span[@class='pagerBlock'][1]//a")
-        links = [a.select("@onclick")[0].extract()
-                 for a in links
-                 if "Suivant" in a.extract()]
-        if len(links) &gt; 0:
-            next_link = re.search("'(.*?)'", links[0])
-            next_link = next_link.group(1)
-            next_link = urlparse.urljoin(response.url, next_link)
-            yield Request(next_link)
-</span>        for p in hxs.select("//ul[@class='eventPageGuestListContainer']/"
-                            "li//strong/text()"):
-            yield People(name=p.extract())
-
-</code></pre><div class='source'>  <a class='source' href='examples/scrapy/scrapy_example/spiders/amiando2.py'>  source  </a></div>
+                        {{scrapy/scrapy_example/spiders/amiando2.py}}
                     </section>
                     <section>
                         <h2>Lancer scrapy</h2>
-                        <pre><code class='snippet  bash' data-trim  data-noescape>scrapy runspider scrapy_example/spiders/amiando2.py -o people.csv -t csv -L INFO
-
-</code></pre><div class='source'>  <a class='source' href='examples/amiando-start.sh'>  source  </a></div>
+                        {{amiando-start.sh}}
                         <p>
                             Cela va créer un fichier «people.csv» contenant un nom par ligne.
                         </p>
                     </section>
                     <section>
                         <h2>Croiser l'information</h2>
-                        <pre><code class='snippet  python' data-trim  data-noescape>
-<span style='display:None;'>import csv
-from pyquery import PyQuery as pq
-import json
-import requests
-</span># Lit les données
-people = csv.reader(open("scrapy/people.csv"))
-next(people)  # Passer l'en-tête
-
-data = []
-for full_name, in people:
-    # Coupe (arbitrairement) le prenom au premier espace
-    prenom, nom = full_name.split(" ", 1)
-    url = "http://fr.linkedin.com/pub/dir/?first=%s&last=%s" % (prenom, nom)
-
-    resultat = requests.get(url)
-    document = pq(resultat.text).make_links_absolute(url)
-
-    link = document("#result-set h2 strong a").attr.href
-<span style='display:None;'>    # Améliore l'extraction en ne prenant que quelqu'un bossant en France
-    vcards = document("#result-set li.vcard")
-    for vcard in vcards.items():
-        if "france" in vcard(".location").text().lower():
-            link = vcard("h2 strong a").attr.href
-            break
-</span>    boulot, image = None, None
-    if link:
-        profil = requests.get(link)
-        document = pq(profil.text).make_links_absolute(link)
-        boulot = [p.text().strip() for p in document(".current li").items()]
-        image = document("#profile-picture img").attr.src
-
-    data.append({"name": full_name, "boulot": boulot,
-                 "image": image, "url": link})
-<span style='display:None;'>json.dump(data, open("qui_fait_quoi.json", "w"), indent=2)
-</span>
-</code></pre><div class='source'>  <a class='source' href='examples/qui_fait_quoi.py'>  source  </a></div>
+                        {{qui_fait_quoi.py}}
                     </section>
                     <section>
                         <h2>Resultat</h2>
